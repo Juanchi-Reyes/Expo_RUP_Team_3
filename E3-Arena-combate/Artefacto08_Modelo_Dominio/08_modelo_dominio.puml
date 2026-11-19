@@ -1,0 +1,80 @@
+@startuml
+' RPG Manager - E3 - Artefacto 8: Modelo del dominio
+' Diagrama CONCEPTUAL: sin metodos ni tipos de dato.
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam linetype ortho
+skinparam defaultFontName Arial
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor #EDF5FF
+  BorderColor #265D8E
+  ArrowColor #4D6477
+  FontColor #17324D
+  AttributeFontColor #33485C
+}
+skinparam note {
+  BackgroundColor #FFF8DE
+  BorderColor #B99732
+  FontColor #4C401B
+}
+hide methods
+hide circle
+
+title RPG Manager | E3 - Arena de combate\nArtefacto 8: Modelo del dominio
+
+class Arena {
+  nombre
+}
+
+class Combate {
+  estado
+}
+
+class Personaje {
+  nombre
+  vidaActual
+  vidaMaxima
+}
+
+class Turno {
+  orden
+}
+
+class Ataque {
+  daño
+}
+
+class Habilidad {
+  nombre
+  efecto
+}
+
+class Resultado {
+  fecha
+  desenlace
+}
+
+' Multiplicidad en cada extremo: cuantas instancias de ese concepto
+' puede tener relacionadas una instancia del concepto del otro extremo.
+Arena "1" -- "0..*" Combate : alberga
+Combate "0..*" -- "2" Personaje : enfrenta
+Combate "1" -- "1..*" Turno : contiene
+Personaje "1" -- "0..*" Turno : participa en
+Turno "1" -- "0..1" Ataque : registra
+Personaje "0..*" -- "0..*" Habilidad : dispone de
+Turno "0..*" -- "0..1" Habilidad : utiliza
+Combate "1" -- "0..1" Resultado : produce
+Resultado "0..*" --> "1" Personaje : declara ganador
+
+note right of Combate
+  MODELO DEL DOMINIO
+  Describe conceptos y relaciones del juego.
+  No incluye metodos ni tipos de datos.
+
+  A diferencia del diagrama de clases de diseno,
+  no define la implementacion del software.
+end note
+
+@enduml
