@@ -1,0 +1,51 @@
+@startuml
+title Flujo de Navegación - Prototipo de Interfaz (Módulo E3: Arena de Combate)
+skinparam state {
+  BackgroundColor #F8F9FA
+  BorderColor #4A148C
+  ArrowColor #4A148C
+  FontName Arial
+}
+
+[*] --> P1 : Ingresar a la Arena de Combate
+
+state "P1: Selección de Rival" as P1 {
+  P1 : **Soporta:** CU-01 (Emparejar rival en la Arena)
+  P1 : -----------------------------------------
+  P1 : - Datos del Personaje propio (Clase, Nivel, Vida)
+  P1 : - Botón [Buscar Combate] (rango +/- 1 nivel)
+  P1 : - Temporizador (30 s -> Emparejamiento automatico con CPU)
+  P1 : - Tarjeta del Rival encontrado + Sorteo de turno inicial
+}
+
+state "P2: Turno de Combate" as P2 {
+  P2 : **Soporta:** CU-02 (Ejecutar turno de combate)
+  P2 : -----------------------------------------
+  P2 : - Barras de Vida y Maná en tiempo real
+  P2 : - Indicador de Turno activo y estado (Buff Defensa)
+  P2 : - Panel: [Ataque] | [Habilidades] | [Defender] | [Rendirse]
+  P2 : - Registro de Combate (daño, esquiva, curación)
+}
+
+state "P3: Resultado del Combate" as P3 {
+  P3 : **Soporta:** CU-03 (Finalizar combate y registrar resultado)
+  P3 : -----------------------------------------
+  P3 : - Banner de Victoria / Derrota (acciones bloqueadas)
+  P3 : - Resumen del Combate (turnos, daño, esquivas)
+  P3 : - Estado: Resultado guardado en historial
+  P3 : - Recompensa de Experiencia (XP)
+  P3 : - Botones: [Nuevo Combate] | [Salir de la Arena]
+}
+
+P1 --> P1 : Tiempo > 30 s\n[Emparejamiento automatico con CPU]
+P1 --> P2 : Rival encontrado y confirmado /\nMoneda virtual asigna turno inicial
+P1 --> [*] : Clic en [Cancelar búsqueda / Volver]
+
+P2 --> P2 : Turno resuelto (Ataque / Habilidad / Defensa)\n[Vida de ambos > 0] (Ciclo de turnos)
+P2 --> P2 : Maná insuficiente /\nMuestra alerta sin consumir turno
+P2 --> P3 : Vida de un Personaje <= 0\n(o clic en [Rendirse] / Desconexión)
+
+P3 --> P1 : Clic en [Buscar nuevo rival]
+P3 --> [*] : Clic en [Salir al menú principal]
+
+@enduml
