@@ -1,0 +1,68 @@
+
+@startuml
+title Diagrama de actividades - Arena de combate RPG Manager
+
+|Jugador|
+start
+:Seleccionar rival;
+:Iniciar combate;
+
+|Sistema|
+:Preparar personajes;
+:Asignar puntos de vida iniciales;
+
+while (¿Combate continúa?) is (Sí)
+
+    |Jugador|
+    :Seleccionar ataque o habilidad;
+    :Atacar al rival;
+
+    |Sistema|
+    :Evaluar si el rival esquiva;
+
+    if (¿El rival esquiva el ataque?) then (Sí)
+        :Registrar ataque esquivado;
+    else (No)
+        :Aplicar daño al rival;
+        :Actualizar vida del rival;
+    endif
+
+    if (¿La vida del rival es <= 0?) then (Sí)
+        :Declarar ganador: Jugador;
+        :Registrar resultado;
+        break
+    else (No)
+        :Continuar combate;
+    endif
+
+    |Sistema|
+    :Cambiar turno al rival;
+
+    |Jugador|
+    :Recibir ataque del rival;
+
+    |Sistema|
+    :Evaluar si el jugador esquiva;
+
+    if (¿El jugador esquiva el ataque?) then (Sí)
+        :Registrar ataque esquivado;
+    else (No)
+        :Aplicar daño al jugador;
+        :Actualizar vida del jugador;
+    endif
+
+    if (¿La vida del jugador es <= 0?) then (Sí)
+        :Declarar ganador: Rival;
+        :Registrar resultado;
+        break
+    else (No)
+        :Preparar siguiente turno;
+    endif
+
+endwhile (No)
+
+|Sistema|
+:Mostrar resultado del combate;
+stop
+
+@enduml
